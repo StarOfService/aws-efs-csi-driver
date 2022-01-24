@@ -43,6 +43,7 @@ const (
 	GidMin              = "gidRangeStart"
 	GidMax              = "gidRangeEnd"
 	MountTargetIp       = "mounttargetip"
+	EncryptInTransit    = "encryptInTransit"
 	ProvisioningMode    = "provisioningMode"
 	RoleArn             = "awsRoleArn"
 	TempMountPathPrefix = "/var/lib/csi/pv"
@@ -261,6 +262,10 @@ func (d *Driver) CreateVolume(ctx context.Context, req *csi.CreateVolumeRequest)
 		} else {
 			volContext[MountTargetIp] = mountTarget.IPAddress
 		}
+	}
+
+	if value, ok := volumeParams[EncryptInTransit]; ok {
+		volContext[EncryptInTransit] = value
 	}
 
 	return &csi.CreateVolumeResponse{
